@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { PostProvider } from './context/PostContext';
+import { Layout } from './components/layout/Layout';
+import { HomePage } from './pages/HomePage';
+import { PostDetailPage } from './pages/PostDetailPage';
+import { CreatePostPage } from './pages/CreatePostPage';
+import { EditPostPage } from './pages/EditPostPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+/**
+ * ============================================================================
+ * 🌐 APPLICATION ROUTER & STATE PROVIDER
+ * ============================================================================
+ * Routing Architecture:
+ * - /               : Home Dashboard (CRUD List, Search, Filter, Sort, Pagination)
+ * - /posts/new      : Create New Post Form
+ * - /posts/:id      : Single Post Details + Real Comments
+ * - /posts/edit/:id : Edit Post Form
+ * - *               : 404 Not Found Page
+ * 
+ * ⚡ REDUX TOOLKIT NOTE:
+ * Right now, <PostProvider> supplies standard React state so the app runs
+ * immediately with full CRUD interactivity against DummyJSON.
+ * When you are ready to manage state manually via Redux Toolkit:
+ * - Wrap <App /> with <Provider store={store}> in src/main.tsx
+ * - Connect your slice hooks into the pages/components!
+ * ============================================================================
+ */
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <PostProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="posts/new" element={<CreatePostPage />} />
+            <Route path="posts/:id" element={<PostDetailPage />} />
+            <Route path="posts/edit/:id" element={<EditPostPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </PostProvider>
+  );
+};
 
-export default App
+export default App;
