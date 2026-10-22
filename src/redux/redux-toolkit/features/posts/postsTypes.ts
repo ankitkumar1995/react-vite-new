@@ -1,15 +1,15 @@
-import type { Post } from '../../../../types/post';
+import type { Post } from "../../../../types/post";
 
 export interface PostsState {
-  items: Post[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
-  total: number;
-  page: number;
-  limit: number;
-  filters: {
-    searchQuery: string;
-    selectedTag: string;
-    sortBy: 'latest' | 'likes' | 'views' | 'title';
-  };
+    items: Post[]
+    error: string | null
+    status: 'idle' | 'loading' | 'succeeded' | 'failed',
+    total: number,
+    page: number,
+    limit: number,
+    filters: {
+        searchQuery: string,
+        selectedTag: string,
+        sortBy: 'latest' | 'likes' | 'views' | 'title'
+    }
 }
